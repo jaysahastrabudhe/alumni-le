@@ -1,18 +1,16 @@
 /**
- * GSAP animation system.
- * All targets are pre-existing React DOM nodes (no SplitType / DOM insertion).
+ * GSAP animation system — full cinematic motion.
  *
- * Approach for above-fold elements (Hero):
- *   – CSS sets opacity:0 to prevent FOUC
- *   – We use gsap.fromTo({ y: offset }, { opacity:1, y:0 }) so GSAP reads
- *     the current CSS opacity (0) as the "from" and animates to opacity:1
+ * Hero  : coordinated gsap.timeline() entrance sequence
+ *          + ambient glow pulse/float
+ *          + multi-layer parallax (background moves slower = depth)
  *
- * Approach for below-fold elements (ScrollTrigger):
- *   – gsap.from({ opacity:0, y:offset }) is fine; they aren't visible before trigger
+ * Sections : ScrollTrigger-based reveals (manifesto, offer, stories)
  *
- * Line-clip reveals (hero/manifesto/offer titles):
- *   – overflow:hidden on .hero-v2__line-clip / .line-clip acts as the mask
- *   – gsap.from({ yPercent:110 }) slides text into view from below
+ * Rules:
+ *  • No SplitType / DOM insertion — all targets are React-rendered nodes
+ *  • CSS opacity:0 on above-fold elements; GSAP fromTo() animates to opacity:1
+ *  • below-fold gsap.from() is fine (not visible until ScrollTrigger fires)
  */
 import { useEffect } from 'react';
 import gsap from 'gsap';
@@ -20,152 +18,264 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const EXPO = 'expo.out';
-const P3   = 'power3.out';
-const P2   = 'power2.out';
+/* ─ Easing tokens ─────────────────────────── */
+const EXPO   = 'expo.out';
+const BACK   = 'back.out(1.6)';
+const P3     = 'power3.out';
+const P2     = 'power2.out';
+const SINE   = 'sine.inOut';
 
 export default function useAnimations(view) {
   useEffect(() => {
     ScrollTrigger.getAll().forEach(t => t.kill());
     if (view !== 'home') return;
 
-    // Wait one rAF so React finishes painting
     const raf = requestAnimationFrame(() => {
       const ctx = gsap.context(() => {
 
-        /* ── HERO ── above-fold, all use fromTo / to ──── */
+        /* ══════════════════════════════════════════
+           HERO — entrance timeline
+        ══════════════════════════════════════════ */
+        const tl = gsap.timeline({ defaults: { ease: P3 } });
 
-        // Eyebrow: CSS opacity:0  →  animate y + opacity
-        gsap.fromTo('.hero-v2__eyebrow',
-          { y: 20 },
-          { opacity: 1, y: 0, duration: 0.9, ease: P3, delay: 0.1 }
-        );
-
-        // Headline line-clip reveal (overflow:hidden mask)
-        gsap.from('.hero-v2__line-inner', {
-          yPercent: 110,
-          duration: 1.15,
-          ease: EXPO,
-          stagger: 0.16,
-          delay: 0.25,
-        });
-
-        // Divider draw
-        gsap.fromTo('.hero-v2__divider',
-          { scaleX: 0 },
-          { scaleX: 1, duration: 1.0, ease: EXPO, delay: 0.6, transformOrigin: 'left center' }
-        );
-
-        // Sub paragraph: CSS opacity:0
-        gsap.fromTo('.hero-v2__sub',
-          { y: 28 },
-          { opacity: 1, y: 0, duration: 0.9, ease: P3, delay: 0.72 }
-        );
-
-        // Actions: CSS opacity:0
-        gsap.fromTo('.hero-v2__actions',
+        // 1. Eyebrow slides up (CSS opacity:0 → 1)
+        tl.fromTo('[data-anim="eyebrow"]',
           { y: 24 },
-          { opacity: 1, y: 0, duration: 0.85, ease: P3, delay: 0.84 }
+          { opacity: 1, y: 0, duration: 0.9 },
+          0.15
         );
 
-        // Stats bar: CSS opacity:0
-        gsap.fromTo('.hero-v2__stats-bar',
-          { y: 20 },
-          { opacity: 1, y: 0, duration: 0.8, ease: P3, delay: 0.92 }
+        // 2. Headline line-clip reveals (yPercent 110 → 0 through overflow:hidden mask)
+        tl.from('.hero__line-inner', {
+          yPercent: 115,
+          duration: 1.2,
+          ease: EXPO,
+          stagger: 0.18,
+        }, 0.3);
+
+        // 3. Rule draws left → right
+        tl.to('[data-anim="rule"]', {
+          scaleX: 1,
+          duration: 1.0,
+          ease: EXPO,
+          transformOrigin: 'left center',
+        }, 0.78);
+
+        // 4. Sub paragraph
+        tl.fromTo('[data-anim="sub"]',
+          { y: 28 },
+          { opacity: 1, y: 0, duration: 0.85 },
+          0.88
         );
 
-        // Stats counter
-        document.querySelectorAll('.hero-v2__stat-value').forEach(el => {
-          const raw    = el.textContent.trim();
-          const num    = parseFloat(raw.replace(/[^0-9.]/g, ''));
-          const suffix = raw.replace(/[0-9.]/g, '');
-          if (!isNaN(num) && num > 0) {
-            const obj = { val: 0 };
-            gsap.to(obj, {
-              val: num,
-              duration: 1.8,
-              ease: P2,
-              delay: 1.1,
-              onUpdate() {
-                el.textContent = Math.floor(obj.val) + suffix;
-              },
-            });
-          }
+        // 5. Buttons — spring scale pop
+        tl.fromTo('.hero__btn',
+          { y: 32, scale: 0.88 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.75, ease: BACK, stagger: 0.14 },
+          1.02
+        );
+
+        // 6. Stats bar
+        tl.fromTo('[data-anim="stats"]',
+          { y: 24 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          1.18
+        );
+
+        // 7. Stats counter
+        document.querySelectorAll('.hero__stat-num').forEach((el, i) => {
+          const target = parseInt(el.dataset.count, 10);
+          const suffix = el.dataset.suffix || '';
+          if (!target) return;
+          const obj = { val: 0 };
+          tl.to(obj, {
+            val: target,
+            duration: 1.6,
+            ease: P2,
+            onUpdate() {
+              el.textContent = Math.floor(obj.val) + suffix;
+            },
+          }, 1.32 + i * 0.05);
         });
 
-        // Parallax blobs (scrub)
-        gsap.to('.hero-v2__blob--1', {
-          y: -140, ease: 'none',
-          scrollTrigger: {
-            trigger: '.hero-v2', start: 'top top', end: 'bottom top', scrub: 2,
-          },
-        });
-        gsap.to('.hero-v2__blob--2', {
-          y: 90, ease: 'none',
-          scrollTrigger: {
-            trigger: '.hero-v2', start: 'top top', end: 'bottom top', scrub: 1.4,
-          },
+        /* ── Spotlight glow entrance ── */
+        tl.fromTo('.hero__spotlight',
+          { opacity: 0, scale: 0.7 },
+          { opacity: 1, scale: 1, duration: 1.4, ease: P2 },
+          0.1
+        );
+
+        /* ══════════════════════════════════════════
+           AMBIENT — continuous glow animations
+           (run forever independently of scroll)
+        ══════════════════════════════════════════ */
+
+        // Teal orb — slow float up-right
+        gsap.to('.hero__glow--teal', {
+          x: 60, y: -50,
+          duration: 7,
+          ease: SINE,
+          yoyo: true,
+          repeat: -1,
         });
 
-        /* ── MANIFESTO ── ScrollTrigger ──────────────── */
+        // Blue orb — slow float opposite
+        gsap.to('.hero__glow--blue', {
+          x: -50, y: 60,
+          duration: 9,
+          ease: SINE,
+          yoyo: true,
+          repeat: -1,
+          delay: 1.5,
+        });
 
-        // Label: CSS opacity:0
+        // Violet accent — subtle drift
+        gsap.to('.hero__glow--violet', {
+          x: 40, y: 30,
+          duration: 11,
+          ease: SINE,
+          yoyo: true,
+          repeat: -1,
+          delay: 3,
+        });
+
+        // Spotlight — breathe (pulse)
+        gsap.to('.hero__spotlight', {
+          scale: 1.18,
+          opacity: 0.85,
+          duration: 4,
+          ease: SINE,
+          yoyo: true,
+          repeat: -1,
+          delay: 1.4,
+        });
+
+        // Accent glow on "born." — pulse
+        gsap.to('.hero__accent-glow', {
+          opacity: 0.6,
+          scale: 1.3,
+          duration: 2.5,
+          ease: SINE,
+          yoyo: true,
+          repeat: -1,
+          delay: 2,
+        });
+
+        /* ══════════════════════════════════════════
+           PARALLAX — multi-layer scroll depth
+           Background moves SLOWER than scroll
+           = appears to be further away
+        ══════════════════════════════════════════ */
+        const heroTrigger = {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.8,
+        };
+
+        // Far layer — teal glow (slowest, 25% of scroll speed)
+        gsap.to('.hero__glow--teal', {
+          y: '-=180',
+          ease: 'none',
+          scrollTrigger: { ...heroTrigger, scrub: 3 },
+        });
+
+        // Mid layer — blue glow (35% of scroll)
+        gsap.to('.hero__glow--blue', {
+          y: '-=140',
+          ease: 'none',
+          scrollTrigger: { ...heroTrigger, scrub: 2.5 },
+        });
+
+        // Violet near-far (50%)
+        gsap.to('.hero__glow--violet', {
+          y: '-=100',
+          ease: 'none',
+          scrollTrigger: { ...heroTrigger, scrub: 2 },
+        });
+
+        // Spotlight (60%)
+        gsap.to('.hero__spotlight', {
+          y: '-=120',
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: { ...heroTrigger, scrub: 1.5 },
+        });
+
+        // Grid — slightly faster than text = depth
+        gsap.to('.hero__grid', {
+          y: '-=80',
+          ease: 'none',
+          scrollTrigger: { ...heroTrigger, scrub: 1.2 },
+        });
+
+        // Text layer (inner) — slides up naturally but slightly restrained
+        // This makes text feel "closer" than the pure-dark background
+        gsap.to('[data-parallax="text"]', {
+          y: '-=60',
+          ease: 'none',
+          scrollTrigger: { ...heroTrigger, scrub: 0.8 },
+        });
+
+        /* ══════════════════════════════════════════
+           MANIFESTO — ScrollTrigger reveals
+        ══════════════════════════════════════════ */
         gsap.fromTo('.manifesto__label',
-          { x: -24 },
+          { x: -28, opacity: 0 },
           {
-            opacity: 1, x: 0, duration: 0.75, ease: P3,
-            scrollTrigger: { trigger: '.manifesto__label', start: 'top 85%' },
+            x: 0, opacity: 1, duration: 0.75, ease: P3,
+            scrollTrigger: { trigger: '.manifesto__label', start: 'top 86%' },
           }
         );
 
-        // Big text line-clip
         gsap.from('.manifesto__text .line-inner', {
-          yPercent: 110, duration: 1.1, ease: EXPO, stagger: 0.12,
-          scrollTrigger: { trigger: '.manifesto__text', start: 'top 82%' },
+          yPercent: 112, duration: 1.1, ease: EXPO, stagger: 0.12,
+          scrollTrigger: { trigger: '.manifesto__text', start: 'top 83%' },
         });
 
-        // Three items
         gsap.from('.manifesto__item', {
-          opacity: 0, y: 36, duration: 0.82, ease: P3, stagger: 0.12,
+          opacity: 0, y: 40, duration: 0.85, ease: P3, stagger: 0.13,
           scrollTrigger: { trigger: '.manifesto__grid', start: 'top 88%' },
         });
 
-        /* ── WHAT WE OFFER ── ScrollTrigger ─────────── */
-
+        /* ══════════════════════════════════════════
+           WHAT WE OFFER — ScrollTrigger reveals
+        ══════════════════════════════════════════ */
         gsap.fromTo('.offer__header-label',
-          { x: -24 },
+          { x: -28, opacity: 0 },
           {
-            opacity: 1, x: 0, duration: 0.75, ease: P3,
-            scrollTrigger: { trigger: '.offer__header', start: 'top 85%' },
+            x: 0, opacity: 1, duration: 0.75, ease: P3,
+            scrollTrigger: { trigger: '.offer__header', start: 'top 86%' },
           }
         );
 
         gsap.from('.offer__title .line-inner', {
-          yPercent: 110, duration: 1.0, ease: EXPO, stagger: 0.1,
-          scrollTrigger: { trigger: '.offer__title', start: 'top 82%' },
+          yPercent: 112, duration: 1.0, ease: EXPO, stagger: 0.1,
+          scrollTrigger: { trigger: '.offer__title', start: 'top 83%' },
         });
 
         gsap.from('.offer__row', {
-          opacity: 0, y: 48, duration: 0.85, ease: P3, stagger: 0.1,
-          scrollTrigger: { trigger: '.offer__list', start: 'top 85%' },
+          opacity: 0, y: 52, duration: 0.9, ease: P3, stagger: 0.1,
+          scrollTrigger: { trigger: '.offer__list', start: 'top 86%' },
         });
 
-        /* ── STORIES ── ScrollTrigger ────────────────── */
-
+        /* ══════════════════════════════════════════
+           STORIES — ScrollTrigger reveals
+        ══════════════════════════════════════════ */
         gsap.from('.stories .section-header > *', {
-          opacity: 0, y: 28, duration: 0.8, ease: P3, stagger: 0.1,
-          scrollTrigger: { trigger: '.stories .section-header', start: 'top 85%' },
+          opacity: 0, y: 32, duration: 0.8, ease: P3, stagger: 0.1,
+          scrollTrigger: { trigger: '.stories .section-header', start: 'top 86%' },
         });
 
         gsap.from('.story-quote', {
-          opacity: 0, y: 56, duration: 0.9, ease: P3, stagger: 0.13,
-          scrollTrigger: { trigger: '.stories__quotes', start: 'top 85%' },
+          opacity: 0, y: 60, duration: 0.9, ease: P3, stagger: 0.14,
+          scrollTrigger: { trigger: '.stories__quotes', start: 'top 86%' },
         });
 
-      });
+      }); // end ctx
 
       return () => ctx.revert();
-    });
+    }); // end rAF
 
     return () => {
       cancelAnimationFrame(raf);
