@@ -34,19 +34,24 @@ export default function AuthPage({ onSuccess, defaultTab = 'login' }) {
         .auth-page {
           min-height: 100vh;
           background: var(--bg);
+          background-image:
+            radial-gradient(ellipse 80% 60% at 20% 20%, rgba(54, 99, 173, 0.08), transparent),
+            radial-gradient(ellipse 60% 60% at 80% 80%, rgba(37, 188, 189, 0.08), transparent);
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 24px;
         }
         .auth-card {
-          background: white;
-          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.88);
+          backdrop-filter: blur(24px) saturate(180%);
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.7);
           border-radius: var(--radius-lg);
           padding: 40px;
           width: 100%;
           max-width: 480px;
-          box-shadow: var(--shadow-lg);
+          box-shadow: var(--shadow-lg), 0 0 0 1px rgba(22, 14, 68, 0.05);
         }
         .auth-logo {
           display: flex;

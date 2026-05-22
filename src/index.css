@@ -21,6 +21,10 @@
   --radius-md: 16px;
   --radius-lg: 24px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-blur: blur(16px) saturate(180%);
+  --glass-shadow: 0 8px 32px rgba(22, 14, 68, 0.07);
 }
 
 *, *::before, *::after {
@@ -68,7 +72,7 @@ input, select, textarea { font-family: inherit; outline: none; }
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(54, 99, 173, 0.4);
+  box-shadow: 0 8px 28px rgba(54, 99, 173, 0.45), 0 0 0 1px rgba(54, 99, 173, 0.15);
 }
 
 .btn-secondary {
@@ -139,3 +143,18 @@ input, select, textarea { font-family: inherit; outline: none; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: rgba(22,14,68,0.15); border-radius: 3px; }
+
+/* Shared section layout — defined globally so all views inherit without relying on Directory being mounted */
+.section { padding: 96px 0; }
+.section-header { text-align: center; margin-bottom: 48px; }
+.section-title {
+  font-size: 40px; font-weight: 900; color: var(--navy);
+  letter-spacing: -0.02em; margin-bottom: 16px;
+}
+.section-desc {
+  font-size: 17px; color: var(--text-muted);
+  max-width: 520px; margin: 0 auto; line-height: 1.7;
+}
+@media (max-width: 600px) {
+  .section-title { font-size: 30px; }
+}

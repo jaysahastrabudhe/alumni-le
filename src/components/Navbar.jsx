@@ -134,10 +134,18 @@ export default function Navbar({ activeSection, onNav }) {
         .navbar {
           position: fixed; top: 0; left: 0; right: 0; z-index: 100;
           padding: 16px 0; transition: all 0.3s ease;
+          background: rgba(248, 250, 252, 0.72);
+          backdrop-filter: blur(20px) saturate(160%);
+          -webkit-backdrop-filter: blur(20px) saturate(160%);
+          border-bottom: 1px solid rgba(22, 14, 68, 0.04);
         }
         .navbar--scrolled {
-          background: rgba(248,250,252,0.96); backdrop-filter: blur(20px);
-          box-shadow: 0 1px 0 rgba(22,14,68,0.08); padding: 12px 0;
+          background: rgba(248, 250, 252, 0.94);
+          backdrop-filter: blur(24px) saturate(200%);
+          -webkit-backdrop-filter: blur(24px) saturate(200%);
+          box-shadow: 0 1px 0 rgba(22, 14, 68, 0.08), 0 4px 24px rgba(22, 14, 68, 0.04);
+          padding: 12px 0;
+          border-bottom-color: rgba(22, 14, 68, 0.08);
         }
         .navbar__inner { display: flex; align-items: center; gap: 32px; }
         .navbar__logo { background: none; flex-shrink: 0; }
@@ -170,8 +178,13 @@ export default function Navbar({ activeSection, onNav }) {
         .navbar__status-pill--approved { background: rgba(16,185,129,0.1); color: #059669; }
         .navbar__user-menu {
           position: absolute; top: calc(100% + 8px); right: 0;
-          background: white; border: 1px solid var(--border); border-radius: 14px;
-          box-shadow: var(--shadow-lg); min-width: 220px; overflow: hidden; z-index: 200;
+          background: rgba(255, 255, 255, 0.94);
+          backdrop-filter: blur(24px) saturate(200%);
+          -webkit-backdrop-filter: blur(24px) saturate(200%);
+          border: 1px solid rgba(255, 255, 255, 0.7);
+          border-radius: 14px;
+          box-shadow: var(--shadow-lg), 0 0 0 1px rgba(22, 14, 68, 0.06);
+          min-width: 220px; overflow: hidden; z-index: 200;
         }
         .navbar__user-menu-header {
           padding: 14px 16px; border-bottom: 1px solid var(--border);

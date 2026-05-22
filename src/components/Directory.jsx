@@ -226,10 +226,6 @@ export default function Directory() {
       </div>
 
       <style>{`
-        .section { padding: 96px 0; }
-        .section-header { text-align: center; margin-bottom: 48px; }
-        .section-title { font-size: 40px; font-weight: 900; color: var(--navy); letter-spacing: -0.02em; margin-bottom: 16px; }
-        .section-desc { font-size: 17px; color: var(--text-muted); max-width: 520px; margin: 0 auto; line-height: 1.7; }
         .directory__controls { display: flex; gap: 12px; margin-bottom: 16px; }
         .directory__search { flex: 1; position: relative; }
         .directory__search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
@@ -280,7 +276,6 @@ export default function Directory() {
           display: flex; flex-direction: column; align-items: center; gap: 16px;
         }
         @media (max-width: 600px) {
-          .section-title { font-size: 30px; }
           .directory__grid { grid-template-columns: 1fr; }
         }
       `}</style>

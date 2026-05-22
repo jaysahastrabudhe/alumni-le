@@ -110,7 +110,7 @@ export default function ProfilePage({ onNav }) {
 
       <style>{`
         .profile-page {
-          padding: 120px 0 80px;
+          padding: 48px 0 80px;
           min-height: 100vh;
         }
         .profile-layout {
@@ -120,13 +120,16 @@ export default function ProfilePage({ onNav }) {
           align-items: start;
         }
         .profile-card {
-          background: white;
-          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.92);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid rgba(255, 255, 255, 0.7);
           border-radius: var(--radius-lg);
           padding: 36px;
           display: flex;
           flex-direction: column;
           gap: 20px;
+          box-shadow: var(--glass-shadow), var(--shadow-sm);
         }
         .profile-card-top {
           display: flex;

@@ -55,7 +55,7 @@ function AppInner() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar activeSection={view} onNav={setView} />
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1, paddingTop: '65px' }}>
         {view === 'home' && <><Hero onNav={setView} /><Stories /></>}
         {view === 'directory' && <Directory />}
         {view === 'events' && <Events />}

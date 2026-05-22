@@ -90,7 +90,7 @@ export default function Hero({ onNav }) {
       <style>{`
         .hero {
           position: relative;
-          padding: 140px 0 0;
+          padding: 75px 0 0;
           overflow: hidden;
         }
         .hero__bg {
@@ -201,8 +201,10 @@ export default function Hero({ onNav }) {
         }
         .hero__badge-floating {
           position: absolute;
-          background: white;
-          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.88);
+          backdrop-filter: blur(12px) saturate(180%);
+          -webkit-backdrop-filter: blur(12px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.6);
           border-radius: 100px;
           padding: 8px 16px;
           font-size: 13px;
@@ -211,7 +213,7 @@ export default function Hero({ onNav }) {
           display: flex;
           align-items: center;
           gap: 8px;
-          box-shadow: var(--shadow-md);
+          box-shadow: var(--shadow-md), 0 0 0 1px rgba(22, 14, 68, 0.04);
           white-space: nowrap;
         }
         .hero__badge-floating--1 {
