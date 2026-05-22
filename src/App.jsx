@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import './index.css';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import useAnimations from './hooks/useAnimations';
+import CursorOrb from './components/CursorOrb';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Manifesto from './components/Manifesto';
@@ -18,6 +20,9 @@ import AdminDashboard from './pages/AdminDashboard';
 function AppInner() {
   const [view, setView] = useState('home');
   const { user, profile, loading } = useAuth();
+
+  // GSAP animation system — re-runs on view change
+  useAnimations(view);
 
   // Redirect to profile after login if pending
   useEffect(() => {
@@ -56,6 +61,7 @@ function AppInner() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <CursorOrb />
       <Navbar activeSection={view} onNav={setView} darkHero={view === 'home'} />
       <main style={{ flex: 1, paddingTop: view === 'home' ? '0' : '65px' }}>
         {view === 'home' && (

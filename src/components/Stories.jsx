@@ -87,11 +87,8 @@ export default function Stories() {
           flex-direction: column;
           gap: 16px;
           transition: all 0.22s var(--ease);
-          animation: fadeUp 0.55s var(--ease) both;
+          /* GSAP ScrollTrigger handles entrance — no CSS animation */
         }
-        .story-quote:nth-child(1) { animation-delay: 0.05s; }
-        .story-quote:nth-child(2) { animation-delay: 0.15s; }
-        .story-quote:nth-child(3) { animation-delay: 0.25s; }
         .story-quote:hover {
           box-shadow: var(--shadow-md);
           transform: translateY(-2px);

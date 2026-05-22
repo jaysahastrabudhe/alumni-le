@@ -23,9 +23,11 @@ export default function Hero({ onNav }) {
         </div>
 
         <h1 className="hero-v2__headline">
-          <span className="hero-v2__line hero-v2__line--1">Built,</span>
-          <span className="hero-v2__line hero-v2__line--2">
-            not <em className="hero-v2__accent">born.</em>
+          <span className="hero-v2__line-clip">
+            <span className="hero-v2__line-inner">Built,</span>
+          </span>
+          <span className="hero-v2__line-clip">
+            <span className="hero-v2__line-inner">not <em className="hero-v2__accent">born.</em></span>
           </span>
         </h1>
 
@@ -117,7 +119,7 @@ export default function Hero({ onNav }) {
           text-transform: uppercase;
           color: rgba(255,255,255,0.45);
           margin-bottom: 48px;
-          animation: fadeUp 0.7s 0s var(--ease) both;
+          opacity: 0;
         }
         .hero-v2__eyebrow-dash {
           display: inline-block;
@@ -136,14 +138,17 @@ export default function Hero({ onNav }) {
           color: white;
           margin-bottom: 0;
         }
-        .hero-v2__line {
+        /* Line clip container — overflow:hidden is the mask */
+        .hero-v2__line-clip {
           display: block;
+          overflow: hidden;
+          /* Extra padding so descenders (g, p, y) aren't clipped */
+          padding-bottom: 0.06em;
+          margin-bottom: -0.06em;
         }
-        .hero-v2__line--1 {
-          animation: fadeUp 0.7s 0.08s var(--ease) both;
-        }
-        .hero-v2__line--2 {
-          animation: fadeUp 0.7s 0.18s var(--ease) both;
+        /* GSAP animates this from yPercent:110 → 0 */
+        .hero-v2__line-inner {
+          display: block;
         }
         .hero-v2__accent {
           font-style: italic;
@@ -155,7 +160,7 @@ export default function Hero({ onNav }) {
           height: 1px;
           background: rgba(255,255,255,0.15);
           margin: 48px 0;
-          animation: fadeIn 0.6s 0.3s var(--ease) both;
+          transform-origin: left center;
         }
         .hero-v2__sub {
           font-size: 17px;
@@ -163,13 +168,13 @@ export default function Hero({ onNav }) {
           color: rgba(255,255,255,0.55);
           max-width: 520px;
           margin-bottom: 48px;
-          animation: fadeUp 0.6s 0.35s var(--ease) both;
+          opacity: 0;
         }
         .hero-v2__actions {
           display: flex;
           gap: 12px;
           flex-wrap: wrap;
-          animation: fadeUp 0.6s 0.45s var(--ease) both;
+          opacity: 0;
         }
         .hero-v2__cta-primary {
           display: inline-flex;
@@ -214,7 +219,7 @@ export default function Hero({ onNav }) {
           z-index: 1;
           border-top: 1px solid rgba(255,255,255,0.08);
           padding: 40px 0;
-          animation: fadeIn 0.8s 0.6s var(--ease) both;
+          opacity: 0;
         }
         .hero-v2__stats {
           display: flex;

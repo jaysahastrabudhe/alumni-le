@@ -41,8 +41,8 @@ export default function WhatWeOffer({ onNav }) {
             <span>What We Offer</span>
           </div>
           <h2 className="offer__title">
-            The full network.<br />
-            At your fingertips.
+            <span className="line-clip"><span className="line-inner">The full network.</span></span>
+            <span className="line-clip"><span className="line-inner">At your fingertips.</span></span>
           </h2>
         </div>
 
@@ -119,7 +119,7 @@ export default function WhatWeOffer({ onNav }) {
           text-align: left;
           transition: background 0.22s var(--ease), padding 0.22s var(--ease);
           cursor: pointer;
-          animation: fadeUp 0.55s var(--ease) both;
+          /* GSAP handles entrance */
         }
         .offer__row:hover {
           background: white;

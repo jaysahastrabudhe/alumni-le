@@ -8,9 +8,8 @@ export default function Manifesto() {
         </div>
 
         <p className="manifesto__text">
-          We don't hand you a degree.<br />
-          We hand you{' '}
-          <em className="manifesto__em">experience.</em>
+          <span className="line-clip"><span className="line-inner">We don't hand you a degree.</span></span>
+          <span className="line-clip"><span className="line-inner">We hand you{' '}<em className="manifesto__em">experience.</em></span></span>
         </p>
 
         <div className="manifesto__grid">
@@ -56,7 +55,8 @@ export default function Manifesto() {
           text-transform: uppercase;
           color: var(--teal);
           margin-bottom: 56px;
-          animation: fadeUp 0.6s 0.05s var(--ease) both;
+          opacity: 0;
+          /* GSAP animates entrance */
         }
         .manifesto__label-dash {
           display: inline-block;
@@ -72,7 +72,7 @@ export default function Manifesto() {
           color: var(--navy);
           max-width: 820px;
           margin-bottom: 80px;
-          animation: fadeUp 0.7s 0.1s var(--ease) both;
+          /* GSAP animates .line-inner children */
         }
         .manifesto__em {
           font-style: italic;
@@ -90,13 +90,10 @@ export default function Manifesto() {
           display: flex;
           flex-direction: column;
           gap: 16px;
-          animation: fadeUp 0.6s var(--ease) both;
+          /* GSAP ScrollTrigger handles entrance */
         }
         .manifesto__item:last-child { border-right: none; padding-right: 0; }
         .manifesto__item:not(:first-child) { padding-left: 40px; }
-        .manifesto__item:nth-child(1) { animation-delay: 0.15s; }
-        .manifesto__item:nth-child(2) { animation-delay: 0.22s; }
-        .manifesto__item:nth-child(3) { animation-delay: 0.29s; }
         .manifesto__item-num {
           font-size: 11px;
           font-weight: 800;
