@@ -78,26 +78,33 @@ export default function Stories() {
           margin-bottom: 56px;
         }
         .story-quote {
-          background: var(--bg);
+          background: white;
           border: 1px solid var(--border);
-          border-radius: var(--radius-md);
+          border-left: 3px solid transparent;
+          border-radius: var(--radius-sm);
           padding: 28px;
           display: flex;
           flex-direction: column;
           gap: 16px;
-          transition: all 0.2s;
+          transition: all 0.22s var(--ease);
+          animation: fadeUp 0.55s var(--ease) both;
         }
+        .story-quote:nth-child(1) { animation-delay: 0.05s; }
+        .story-quote:nth-child(2) { animation-delay: 0.15s; }
+        .story-quote:nth-child(3) { animation-delay: 0.25s; }
         .story-quote:hover {
           box-shadow: var(--shadow-md);
           transform: translateY(-2px);
+          border-left-color: var(--teal);
         }
         .story-quote__icon { opacity: 0.4; }
         .story-quote__text {
           font-size: 16px;
           line-height: 1.7;
-          color: var(--text-primary);
-          font-weight: 500;
+          color: var(--navy);
+          font-weight: 600;
           flex: 1;
+          letter-spacing: -0.01em;
         }
         .story-quote__author {
           display: flex;

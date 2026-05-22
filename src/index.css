@@ -146,15 +146,56 @@ input, select, textarea { font-family: inherit; outline: none; }
 
 /* Shared section layout — defined globally so all views inherit without relying on Directory being mounted */
 .section { padding: 96px 0; }
-.section-header { text-align: center; margin-bottom: 48px; }
+.section-header { text-align: center; margin-bottom: 56px; }
 .section-title {
-  font-size: 40px; font-weight: 900; color: var(--navy);
-  letter-spacing: -0.02em; margin-bottom: 16px;
+  font-size: 48px; font-weight: 900; color: var(--navy);
+  letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 20px;
 }
 .section-desc {
   font-size: 17px; color: var(--text-muted);
   max-width: 520px; margin: 0 auto; line-height: 1.7;
 }
+
+/* Editorial section label — small caps with teal leading line */
+.section-label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase;
+  color: var(--teal) !important;
+  margin-bottom: 16px;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--teal);
+  flex-shrink: 0;
+}
+
+/* Scroll-reveal keyframes */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.reveal { animation: fadeUp 0.6s var(--ease) both; }
+
 @media (max-width: 600px) {
-  .section-title { font-size: 30px; }
+  .section-title { font-size: 34px; }
 }

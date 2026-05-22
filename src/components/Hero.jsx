@@ -1,86 +1,58 @@
-import { ArrowRight, Users, Building2, Globe } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const stats = [
-  { icon: Users, value: '400+', label: 'Alumni Strong' },
-  { icon: Building2, value: '180+', label: 'Companies Built' },
-  { icon: Globe, value: '14', label: 'Cities Active' },
+  { value: '400+', label: 'Alumni Strong' },
+  { value: '180+', label: 'Companies Built' },
+  { value: '14', label: 'Cities Active' },
+  { value: '6', label: 'Batches' },
 ];
 
 export default function Hero({ onNav }) {
   return (
-    <section className="hero">
-      <div className="hero__bg">
-        <div className="hero__bg-blob hero__bg-blob--1" />
-        <div className="hero__bg-blob hero__bg-blob--2" />
-        <div className="hero__bg-grid" />
+    <section className="hero-v2">
+      <div className="hero-v2__bg" aria-hidden="true">
+        <div className="hero-v2__blob hero-v2__blob--1" />
+        <div className="hero-v2__blob hero-v2__blob--2" />
+        <div className="hero-v2__grid" />
       </div>
 
-      <div className="container hero__inner">
-        <div className="hero__content">
-          <div className="hero__badge">
-            <span className="tag">Alumni Network</span>
-            <span className="hero__badge-text">Batch 2020 – 2025</span>
-          </div>
-
-          <h1 className="hero__headline">
-            Where <span className="hero__headline-accent">doers</span><br />
-            find each other.
-          </h1>
-
-          <p className="hero__sub">
-            The Let's Enterprise alumni network — builders, founders, and leaders
-            who skipped the theory and went straight to work. This is your community.
-          </p>
-
-          <div className="hero__actions">
-            <button className="btn-primary" onClick={() => onNav('directory')}>
-              Browse Alumni <ArrowRight size={16} />
-            </button>
-            <button className="btn-secondary" onClick={() => onNav('mentorship')}>
-              Find a Mentor
-            </button>
-          </div>
+      <div className="container hero-v2__inner">
+        <div className="hero-v2__eyebrow">
+          <span className="hero-v2__eyebrow-dash" />
+          <span>Let's Enterprise — Alumni Network · Batch 2020–2025</span>
         </div>
 
-        <div className="hero__visual">
-          <div className="hero__avatar-grid">
-            {['AM', 'PS', 'RD', 'AI', 'KB', 'SK', 'DP', 'NR', 'VT', 'MJ', 'RL', 'PK'].map((initials, i) => (
-              <div
-                key={i}
-                className="hero__avatar"
-                style={{
-                  background: i % 3 === 0 ? 'var(--gradient)' : i % 3 === 1 ? 'var(--gradient-navy)' : 'linear-gradient(135deg, #25BCBD, #160E44)',
-                  animationDelay: `${i * 0.1}s`,
-                }}
-              >
-                {initials}
-              </div>
-            ))}
-          </div>
+        <h1 className="hero-v2__headline">
+          <span className="hero-v2__line hero-v2__line--1">Built,</span>
+          <span className="hero-v2__line hero-v2__line--2">
+            not <em className="hero-v2__accent">born.</em>
+          </span>
+        </h1>
 
-          <div className="hero__badge-floating hero__badge-floating--1">
-            <span className="hero__badge-dot" style={{ background: '#25BCBD' }} />
-            <span>3 new alumni this week</span>
-          </div>
-          <div className="hero__badge-floating hero__badge-floating--2">
-            <span className="hero__badge-dot" style={{ background: '#3663AD' }} />
-            <span>12 open opportunities</span>
-          </div>
+        <div className="hero-v2__divider" />
+
+        <p className="hero-v2__sub">
+          The LE alumni network — builders, founders, and leaders who skipped the theory
+          and went straight to work. This is your community.
+        </p>
+
+        <div className="hero-v2__actions">
+          <button className="hero-v2__cta-primary" onClick={() => onNav('directory')}>
+            Browse Alumni <ArrowRight size={16} />
+          </button>
+          <button className="hero-v2__cta-ghost" onClick={() => onNav('mentorship')}>
+            Find a Mentor
+          </button>
         </div>
       </div>
 
-      <div className="hero__stats">
+      <div className="hero-v2__stats-bar">
         <div className="container">
-          <div className="hero__stats-inner">
-            {stats.map(({ icon: Icon, value, label }) => (
-              <div key={label} className="hero__stat">
-                <div className="hero__stat-icon">
-                  <Icon size={20} />
-                </div>
-                <div>
-                  <div className="hero__stat-value">{value}</div>
-                  <div className="hero__stat-label">{label}</div>
-                </div>
+          <div className="hero-v2__stats">
+            {stats.map((s, i) => (
+              <div key={s.label} className="hero-v2__stat">
+                <span className="hero-v2__stat-value">{s.value}</span>
+                <span className="hero-v2__stat-label">{s.label}</span>
               </div>
             ))}
           </div>
@@ -88,197 +60,212 @@ export default function Hero({ onNav }) {
       </div>
 
       <style>{`
-        .hero {
+        .hero-v2 {
           position: relative;
-          padding: 75px 0 0;
+          background: var(--navy);
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
           overflow: hidden;
         }
-        .hero__bg {
+        .hero-v2__bg {
           position: absolute;
           inset: 0;
           pointer-events: none;
+          z-index: 0;
         }
-        .hero__bg-blob {
+        .hero-v2__blob {
           position: absolute;
           border-radius: 50%;
-          filter: blur(80px);
+          filter: blur(100px);
         }
-        .hero__bg-blob--1 {
-          width: 600px;
-          height: 600px;
-          top: -200px;
-          right: -100px;
-          background: radial-gradient(ellipse, rgba(37, 188, 189, 0.12), transparent 70%);
+        .hero-v2__blob--1 {
+          width: 700px; height: 700px;
+          top: -200px; right: -100px;
+          background: radial-gradient(ellipse, rgba(37,188,189,0.10), transparent 70%);
         }
-        .hero__bg-blob--2 {
-          width: 500px;
-          height: 500px;
-          bottom: 0;
-          left: -150px;
-          background: radial-gradient(ellipse, rgba(54, 99, 173, 0.10), transparent 70%);
+        .hero-v2__blob--2 {
+          width: 600px; height: 600px;
+          bottom: -100px; left: -200px;
+          background: radial-gradient(ellipse, rgba(54,99,173,0.12), transparent 70%);
         }
-        .hero__bg-grid {
-          position: absolute;
-          inset: 0;
-          background-image: linear-gradient(rgba(22,14,68,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(22,14,68,0.04) 1px, transparent 1px);
-          background-size: 48px 48px;
-          mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+        .hero-v2__grid {
+          position: absolute; inset: 0;
+          background-image:
+            linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+          background-size: 64px 64px;
+          mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black, transparent);
         }
-        .hero__inner {
+        .hero-v2__inner {
           position: relative;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 80px;
-          align-items: center;
+          z-index: 1;
+          flex: 1;
+          padding-top: calc(65px + 72px);
           padding-bottom: 80px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
-        .hero__badge {
+        .hero-v2__eyebrow {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 24px;
+          gap: 14px;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.45);
+          margin-bottom: 48px;
+          animation: fadeUp 0.7s 0s var(--ease) both;
         }
-        .hero__badge-text {
-          font-size: 13px;
-          font-weight: 500;
-          color: var(--text-muted);
+        .hero-v2__eyebrow-dash {
+          display: inline-block;
+          width: 36px; height: 1px;
+          background: var(--teal);
+          flex-shrink: 0;
+          opacity: 0.8;
         }
-        .hero__headline {
-          font-size: 64px;
+        .hero-v2__headline {
+          display: flex;
+          flex-direction: column;
+          font-size: clamp(72px, 10vw, 128px);
           font-weight: 900;
-          line-height: 1.05;
-          letter-spacing: -0.03em;
-          color: var(--navy);
-          margin-bottom: 24px;
+          line-height: 0.92;
+          letter-spacing: -0.05em;
+          color: white;
+          margin-bottom: 0;
         }
-        .hero__headline-accent {
-          background: var(--gradient);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+        .hero-v2__line {
+          display: block;
         }
-        .hero__sub {
+        .hero-v2__line--1 {
+          animation: fadeUp 0.7s 0.08s var(--ease) both;
+        }
+        .hero-v2__line--2 {
+          animation: fadeUp 0.7s 0.18s var(--ease) both;
+        }
+        .hero-v2__accent {
+          font-style: italic;
+          color: var(--teal);
+          text-shadow: 0 0 80px rgba(37,188,189,0.35);
+        }
+        .hero-v2__divider {
+          width: 64px;
+          height: 1px;
+          background: rgba(255,255,255,0.15);
+          margin: 48px 0;
+          animation: fadeIn 0.6s 0.3s var(--ease) both;
+        }
+        .hero-v2__sub {
           font-size: 17px;
-          line-height: 1.7;
-          color: var(--text-muted);
-          margin-bottom: 40px;
-          max-width: 480px;
+          line-height: 1.75;
+          color: rgba(255,255,255,0.55);
+          max-width: 520px;
+          margin-bottom: 48px;
+          animation: fadeUp 0.6s 0.35s var(--ease) both;
         }
-        .hero__actions {
+        .hero-v2__actions {
           display: flex;
           gap: 12px;
           flex-wrap: wrap;
+          animation: fadeUp 0.6s 0.45s var(--ease) both;
         }
-        .hero__visual {
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .hero__avatar-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 72px);
-          gap: 12px;
-        }
-        .hero__avatar {
-          width: 72px;
-          height: 72px;
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 14px;
-          font-weight: 800;
-          color: white;
-          letter-spacing: 0.05em;
-          box-shadow: var(--shadow-md);
-          animation: avatarFloat 3s ease-in-out infinite;
-        }
-        @keyframes avatarFloat {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-        }
-        .hero__badge-floating {
-          position: absolute;
-          background: rgba(255, 255, 255, 0.88);
-          backdrop-filter: blur(12px) saturate(180%);
-          -webkit-backdrop-filter: blur(12px) saturate(180%);
-          border: 1px solid rgba(255, 255, 255, 0.6);
-          border-radius: 100px;
-          padding: 8px 16px;
-          font-size: 13px;
-          font-weight: 600;
-          color: var(--navy);
-          display: flex;
+        .hero-v2__cta-primary {
+          display: inline-flex;
           align-items: center;
           gap: 8px;
-          box-shadow: var(--shadow-md), 0 0 0 1px rgba(22, 14, 68, 0.04);
-          white-space: nowrap;
+          padding: 16px 32px;
+          background: var(--teal);
+          color: white;
+          font-size: 15px;
+          font-weight: 700;
+          border-radius: 4px;
+          letter-spacing: 0.01em;
+          transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s;
         }
-        .hero__badge-floating--1 {
-          bottom: 20px;
-          left: -20px;
+        .hero-v2__cta-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 36px rgba(37,188,189,0.45);
+          background: #1fa9aa;
         }
-        .hero__badge-floating--2 {
-          top: 20px;
-          right: -20px;
+        .hero-v2__cta-ghost {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 15px 31px;
+          background: transparent;
+          color: rgba(255,255,255,0.75);
+          font-size: 15px;
+          font-weight: 600;
+          border-radius: 4px;
+          border: 1px solid rgba(255,255,255,0.2);
+          transition: all 0.2s var(--ease);
         }
-        .hero__badge-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          flex-shrink: 0;
+        .hero-v2__cta-ghost:hover {
+          color: white;
+          border-color: rgba(255,255,255,0.5);
+          background: rgba(255,255,255,0.05);
         }
-        .hero__stats {
-          background: var(--navy);
-          padding: 32px 0;
+
+        /* Stats bar */
+        .hero-v2__stats-bar {
+          position: relative;
+          z-index: 1;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          padding: 40px 0;
+          animation: fadeIn 0.8s 0.6s var(--ease) both;
         }
-        .hero__stats-inner {
+        .hero-v2__stats {
           display: flex;
           align-items: center;
-          justify-content: center;
-          gap: 80px;
+          gap: 0;
         }
-        .hero__stat {
+        .hero-v2__stat {
+          flex: 1;
           display: flex;
-          align-items: center;
-          gap: 16px;
+          flex-direction: column;
+          gap: 6px;
+          padding: 0 32px;
+          border-right: 1px solid rgba(255,255,255,0.08);
         }
-        .hero__stat-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 12px;
-          background: rgba(255,255,255,0.1);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--teal);
-          flex-shrink: 0;
-        }
-        .hero__stat-value {
-          font-size: 28px;
+        .hero-v2__stat:first-child { padding-left: 0; }
+        .hero-v2__stat:last-child { border-right: none; }
+        .hero-v2__stat-value {
+          font-size: 40px;
           font-weight: 900;
           color: white;
           line-height: 1;
-          margin-bottom: 2px;
+          letter-spacing: -0.03em;
         }
-        .hero__stat-label {
-          font-size: 13px;
-          color: rgba(255,255,255,0.5);
-          font-weight: 500;
+        .hero-v2__stat-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: rgba(255,255,255,0.4);
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
         }
-        @media (max-width: 900px) {
-          .hero__inner {
-            grid-template-columns: 1fr;
-            gap: 48px;
-            text-align: center;
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .hero-v2__inner { padding-top: calc(65px + 48px); padding-bottom: 48px; }
+          .hero-v2__eyebrow { margin-bottom: 32px; }
+          .hero-v2__divider { margin: 36px 0; }
+          .hero-v2__sub { font-size: 15px; }
+          .hero-v2__stats { gap: 0; flex-wrap: wrap; }
+          .hero-v2__stat {
+            flex: 1 1 40%;
+            padding: 16px 0;
+            border-right: none;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
           }
-          .hero__headline { font-size: 44px; }
-          .hero__sub { margin-left: auto; margin-right: auto; }
-          .hero__actions { justify-content: center; }
-          .hero__visual { display: none; }
-          .hero__stats-inner { gap: 32px; flex-wrap: wrap; justify-content: center; }
+          .hero-v2__stat:nth-child(odd) { padding-right: 24px; }
+          .hero-v2__stat-value { font-size: 32px; }
+        }
+        @media (max-width: 480px) {
+          .hero-v2__actions { flex-direction: column; }
+          .hero-v2__cta-primary, .hero-v2__cta-ghost { justify-content: center; }
+          .hero-v2__stat { flex: 1 1 100%; border-bottom: 1px solid rgba(255,255,255,0.08); }
         }
       `}</style>
     </section>

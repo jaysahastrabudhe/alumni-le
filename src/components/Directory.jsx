@@ -13,12 +13,12 @@ const LinkedinIcon = () => (
 const BATCHES = ['All Batches', '2020', '2021', '2022', '2023', '2024', '2025'];
 const SPECS = ['All Tracks', 'Venture Builder', 'Enterprise Leadership', 'Family Business'];
 
-function AlumniCard({ alum }) {
+function AlumniCard({ alum, style }) {
   const { initials, color } = getAvatarProps(alum.full_name || 'A');
   const avatarColor = alum.avatar_color || color;
 
   return (
-    <div className="alum-card">
+    <div className="alum-card" style={style}>
       <div className="alum-card__header">
         <div className="alum-card__avatar" style={{ background: avatarColor }}>
           {initials}
@@ -64,23 +64,28 @@ function AlumniCard({ alum }) {
 
       <style>{`
         .alum-card {
-          background: white; border: 1px solid var(--border); border-radius: var(--radius-md);
-          padding: 24px; transition: all 0.2s var(--ease); position: relative; overflow: hidden;
+          background: white;
+          border: 1px solid var(--border);
+          border-left: 3px solid transparent;
+          border-radius: var(--radius-sm);
+          padding: 24px;
+          transition: all 0.22s var(--ease);
+          position: relative; overflow: hidden;
           display: flex; flex-direction: column; gap: 12px;
         }
-        .alum-card::before {
-          content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-          background: var(--gradient); opacity: 0; transition: opacity 0.2s;
+        .alum-card:hover {
+          box-shadow: var(--shadow-md);
+          transform: translateY(-2px);
+          border-left-color: var(--teal);
+          border-color: rgba(54,99,173,0.12);
         }
-        .alum-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: rgba(54,99,173,0.2); }
-        .alum-card:hover::before { opacity: 1; }
         .alum-card__header { display: flex; align-items: center; gap: 16px; }
         .alum-card__avatar {
           width: 52px; height: 52px; border-radius: 14px;
           display: flex; align-items: center; justify-content: center;
           font-size: 14px; font-weight: 800; color: white; flex-shrink: 0;
         }
-        .alum-card__name { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+        .alum-card__name { font-size: 17px; font-weight: 800; color: var(--navy); margin-bottom: 2px; letter-spacing: -0.01em; }
         .alum-card__role { font-size: 13px; font-weight: 600; color: var(--blue); margin-bottom: 1px; }
         .alum-card__company { font-size: 12px; color: var(--text-muted); }
         .alum-card__bio { font-size: 13px; line-height: 1.6; color: var(--text-muted); }
@@ -207,7 +212,13 @@ export default function Directory() {
           </div>
         ) : (
           <div className="directory__grid">
-            {filtered.map(alum => <AlumniCard key={alum.id} alum={alum} />)}
+            {filtered.map((alum, i) => (
+              <AlumniCard
+                key={alum.id}
+                alum={alum}
+                style={{ animation: 'fadeUp 0.5s var(--ease) both', animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+              />
+            ))}
             {filtered.length === 0 && !loading && (
               <div className="directory__empty">
                 <p>{search || batch !== 'All Batches' || spec !== 'All Tracks'

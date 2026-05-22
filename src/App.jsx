@@ -3,6 +3,8 @@ import './index.css';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import Manifesto from './components/Manifesto';
+import WhatWeOffer from './components/WhatWeOffer';
 import Directory from './components/Directory';
 import Events from './components/Events';
 import Jobs from './components/Jobs';
@@ -54,9 +56,16 @@ function AppInner() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Navbar activeSection={view} onNav={setView} />
-      <main style={{ flex: 1, paddingTop: '65px' }}>
-        {view === 'home' && <><Hero onNav={setView} /><Stories /></>}
+      <Navbar activeSection={view} onNav={setView} darkHero={view === 'home'} />
+      <main style={{ flex: 1, paddingTop: view === 'home' ? '0' : '65px' }}>
+        {view === 'home' && (
+          <>
+            <Hero onNav={setView} />
+            <Manifesto />
+            <WhatWeOffer onNav={setView} />
+            <Stories />
+          </>
+        )}
         {view === 'directory' && <Directory />}
         {view === 'events' && <Events />}
         {view === 'jobs' && <Jobs />}

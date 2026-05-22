@@ -3,7 +3,7 @@ import { Menu, X, LogOut, User, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { getAvatarProps } from '../supabaseClient';
 
-export default function Navbar({ activeSection, onNav }) {
+export default function Navbar({ activeSection, onNav, darkHero = false }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -27,9 +27,11 @@ export default function Navbar({ activeSection, onNav }) {
 
   const avatarProps = profile?.full_name ? getAvatarProps(profile.full_name) : null;
 
+  const isDark = darkHero && !scrolled;
+
   return (
     <>
-      <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
+      <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''} ${isDark ? 'navbar--dark' : ''}`}>
         <div className="container navbar__inner">
           <button className="navbar__logo" onClick={() => handleNav('home')}>
             <img src="/logo.png" alt="Let's Enterprise" className="navbar__logo-img" />
@@ -133,11 +135,53 @@ export default function Navbar({ activeSection, onNav }) {
       <style>{`
         .navbar {
           position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-          padding: 16px 0; transition: all 0.3s ease;
+          padding: 16px 0; transition: all 0.35s ease;
           background: rgba(248, 250, 252, 0.72);
           backdrop-filter: blur(20px) saturate(160%);
           -webkit-backdrop-filter: blur(20px) saturate(160%);
           border-bottom: 1px solid rgba(22, 14, 68, 0.04);
+        }
+        /* Transparent on dark hero */
+        .navbar--dark {
+          background: transparent !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          border-bottom-color: transparent !important;
+          box-shadow: none !important;
+        }
+        .navbar--dark .navbar__link {
+          color: rgba(255,255,255,0.55);
+        }
+        .navbar--dark .navbar__link:hover {
+          color: white;
+          background: rgba(255,255,255,0.07);
+        }
+        .navbar--dark .navbar__link--active {
+          color: white;
+        }
+        .navbar--dark .navbar__link--active::after {
+          background: var(--teal);
+        }
+        .navbar--dark .navbar__avatar-btn {
+          background: rgba(255,255,255,0.08);
+          border-color: rgba(255,255,255,0.15);
+          color: white;
+        }
+        .navbar--dark .navbar__avatar-btn:hover {
+          background: rgba(255,255,255,0.14);
+          border-color: rgba(255,255,255,0.3);
+        }
+        .navbar--dark .navbar__avatar-name { color: white; }
+        .navbar--dark .navbar__mobile-toggle { color: white; }
+        .navbar--dark .btn-secondary {
+          color: rgba(255,255,255,0.7);
+          border-color: rgba(255,255,255,0.2);
+          background: transparent;
+        }
+        .navbar--dark .btn-secondary:hover {
+          color: white;
+          border-color: rgba(255,255,255,0.45);
+          background: rgba(255,255,255,0.07);
         }
         .navbar--scrolled {
           background: rgba(248, 250, 252, 0.94);
@@ -154,9 +198,20 @@ export default function Navbar({ activeSection, onNav }) {
         .navbar__link {
           background: none; padding: 8px 14px; font-size: 14px; font-weight: 500;
           color: var(--text-muted); border-radius: 8px; transition: all 0.15s;
+          position: relative;
         }
         .navbar__link:hover { color: var(--navy); background: rgba(22,14,68,0.04); }
-        .navbar__link--active { color: var(--blue); font-weight: 600; background: var(--blue-light); }
+        .navbar__link--active {
+          color: var(--navy); font-weight: 700; background: none;
+        }
+        .navbar__link--active::after {
+          content: '';
+          position: absolute;
+          bottom: 2px; left: 14px; right: 14px;
+          height: 2px;
+          background: var(--teal);
+          border-radius: 1px;
+        }
         .navbar__actions { display: flex; align-items: center; gap: 8px; }
         .navbar__avatar-btn {
           display: flex; align-items: center; gap: 10px;

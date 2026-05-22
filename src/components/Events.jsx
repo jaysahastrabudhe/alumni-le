@@ -57,25 +57,30 @@ function EventCard({ event }) {
         .event-card {
           background: white;
           border: 1px solid var(--border);
-          border-radius: var(--radius-md);
+          border-left: 3px solid transparent;
+          border-radius: var(--radius-sm);
           padding: 28px;
           position: relative;
           overflow: hidden;
-          transition: all 0.2s var(--ease);
+          transition: all 0.22s var(--ease);
           display: flex;
           flex-direction: column;
           gap: 16px;
+          animation: fadeUp 0.55s var(--ease) both;
         }
+        .event-card:nth-child(1) { animation-delay: 0.05s; }
+        .event-card:nth-child(2) { animation-delay: 0.13s; }
+        .event-card:nth-child(3) { animation-delay: 0.21s; }
+        .event-card:nth-child(4) { animation-delay: 0.29s; }
         .event-card:hover {
           box-shadow: var(--shadow-md);
           transform: translateY(-2px);
+          border-left-color: var(--teal);
         }
         .event-card__accent {
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 4px;
+          top: 0; left: 0; right: 0;
+          height: 3px;
         }
         .event-card__head {
           display: flex;
@@ -88,10 +93,11 @@ function EventCard({ event }) {
           flex-wrap: wrap;
         }
         .event-card__title {
-          font-size: 20px;
-          font-weight: 800;
+          font-size: 21px;
+          font-weight: 900;
           color: var(--navy);
-          line-height: 1.3;
+          line-height: 1.25;
+          letter-spacing: -0.02em;
         }
         .event-card__desc {
           font-size: 14px;
